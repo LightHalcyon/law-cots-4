@@ -44,7 +44,6 @@ form.addEventListener('submit', e => {
     const pword = document.getElementsByName('pw')[0].value;
     formData.append('username', uname);
     formData.append('password', pword);
-    WebSocketTest();
     fetch(url, {
         method: 'POST',
         headers: {
@@ -100,7 +99,7 @@ function WebSocketTest() {
 		var ws_stomp_display = new SockJS('http://152.118.148.103:15674/stomp');
 		var client_display = Stomp.over(ws_stomp_display);
 		// var mq_queue_display = "/exchange/"+ process.env.NPM + "/" + id;
-		var mq_queue_display = "/exchange/"+ "1406568753-compress" + "/" + "compresspass";
+		var mq_queue_display = "/exchange/"+ "1406568753-frontdl" + "/" + "dlpass";
 		var on_connect_display = function() {
 			console.log('connected');
 			client_display.subscribe(mq_queue_display, on_message_display);
