@@ -87,9 +87,10 @@ func main() {
 
 	go func() {
 		for d := range msgs {
-			arr := strings.Split(string(d.Body), ";")
+			in := strings.Split(string(d.Body), " ")
+			arr := strings.Split(in[0], ";")
 			log.Println(string(d.Body))
-			dl(arr, ch1)
+			dl(arr, ch1, in[1])
 		}
 	}()
 

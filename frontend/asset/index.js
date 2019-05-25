@@ -36,8 +36,14 @@ form.addEventListener('submit', e => {
     const url1 = document.getElementsByName('url');
     const url2 = [].map.call(url1, el => el.value).filter(function (el) {return el != ""})
     console.log(url2)
+    key = generateId(32)
     const formData = new FormData();
     formData.append('url', url2.join(";"));
+    formData.append('id', key);
+    const uname = document.getElementsByName('uname')[0].value;
+    const pword = document.getElementsByName('pw')[0].value;
+    formData.append('username', uname);
+    formData.append('password', pword);
     WebSocketTest();
     fetch(url, {
         method: 'POST',
@@ -58,6 +64,8 @@ form.addEventListener('submit', e => {
         for(i = 0; i< url2.length; i++) {
             WebSocketStats(i);
         };
+    }).then(function() {
+        WebSocketTest();
     });
 });
 
@@ -92,7 +100,7 @@ function WebSocketTest() {
 		var ws_stomp_display = new SockJS('http://152.118.148.103:15674/stomp');
 		var client_display = Stomp.over(ws_stomp_display);
 		// var mq_queue_display = "/exchange/"+ process.env.NPM + "/" + id;
-		var mq_queue_display = "/exchange/"+ "1406568753-front" + "/" + "urlpass";
+		var mq_queue_display = "/exchange/"+ "1406568753-compress" + "/" + "compresspass";
 		var on_connect_display = function() {
 			console.log('connected');
 			client_display.subscribe(mq_queue_display, on_message_display);

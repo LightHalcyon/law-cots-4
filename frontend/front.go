@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"log"
-	// "strings"
+	"strings"
 	// "os"
 
 	"github.com/gin-gonic/gin"
@@ -20,12 +20,19 @@ type appError struct {
 var ch *mq.Channel
 var err error
 // var files map[string]string
-var url, vhost, exchangeName, exchangeType string
+var url1, vhost, exchangeName, exchangeType string
 
 func failOnError(err error, msg string) {
 	if err != nil {
 		log.Fatalf("%s: %s", msg, err)
 	}
+}
+
+func joint(i string, j string) string {
+	var str strings.Builder
+	str.WriteString(i)
+	str.WriteString(j)
+	return str.String()
 }
 
 func sendMessage(c *gin.Context) {
@@ -43,6 +50,35 @@ func sendMessage(c *gin.Context) {
 		})
 		return
 	}
+
+	id, found := c.GetPostForm("id")
+	if !found {
+		c.JSON(http.StatusBadRequest, appError{
+			Code:		http.StatusBadRequest,
+			Message:	"ID Missing, ID Generator probably failed",
+		})
+		return
+	}
+	urlOut = joint(urlOut, joint(" ", id))
+
+	// username, found := c.GetPostForm("username")
+	// if !found {
+	// 	c.JSON(http.StatusBadRequest, appError{
+	// 		Code:		http.StatusBadRequest,
+	// 		Message:	"Missing credentials",
+	// 	})
+	// 	return
+	// }
+
+	// password, found := c.GetPostForm("password")
+	// if !found {
+	// 	c.JSON(http.StatusBadRequest, appError{
+	// 		Code:		http.StatusBadRequest,
+	// 		Message:	"Missing credentials",
+	// 	})
+	// 	return
+	// }
+
 	err := ch.PostMessage(urlOut, "urlpass")
 	if err != nil {
 		c.JSON(http.StatusNotFound, appError{
@@ -60,14 +96,14 @@ func sendMessage(c *gin.Context) {
 
 func main() {
 	// url := "amqp://" + os.Getenv("UNAME") + ":" + os.Getenv("PW") + "@" + os.Getenv("URL") + ":" + os.Getenv("PORT") + "/"
-	url = "amqp://1406568753:167664@152.118.148.103:5672/"
+	url1 = "amqp://1406568753:167664@152.118.148.103:5672/"
 	// vhost := os.Getenv("VHOST")
 	vhost = "1406568753"
 	// exchangeName := os.Getenv("EXCNAME")
 	exchangeName = "1406568753-front"
 	exchangeType = "direct"
 
-	ch, err = mq.InitMQ(url, vhost)
+	ch, err = mq.InitMQ(url1, vhost)
 	if err != nil {
 		panic(err)
 	}
