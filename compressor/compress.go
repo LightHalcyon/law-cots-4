@@ -129,6 +129,7 @@ func main() {
 	go func() {
 		for d := range msgs {
 			id := string(d.Body)
+			log.Println(id)
 			source := "/files/" + id
 			target := "/files"
 			err := tarit(source, target)
