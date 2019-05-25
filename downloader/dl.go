@@ -43,6 +43,7 @@ func dl(arr []string, ch *mq.Channel, ch2 *mq.Channel, id string) {
 			}
 		}(i, v, ch, joint("dlstatus", fmt.Sprint(strconv.Itoa(i))))
 	}
+	log.Println(count)
 	if count == len(arr) {
 		log.Println(id)
 		ch2.PostMessage(id, "compresspass")
