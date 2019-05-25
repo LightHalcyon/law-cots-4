@@ -49,6 +49,7 @@ func main() {
 	exchangeName = "1406568753-front"
 	exchangeType = "direct"
 	exchangeName1 := "1406568753-dl"
+	exchangeName2 := "1406568753-compress"
 	exchangeType1 := "fanout"
 
 	ch, err := initCh(url, vhost, exchangeName, exchangeType, "urlpass")
@@ -56,12 +57,12 @@ func main() {
 		panic(err)
 	}
 
-	ch1, err := initCh(url, vhost, exchangeName1, exchangeType1, "dlstatus")
+	ch1, err := initCh(url, vhost, exchangeName1, exchangeType, "dlstatus")
 	if err != nil {
 		panic(err)
 	}
 
-	ch2, err := initCh(url, vhost, exchangeName1, exchangeType1, "compresspass")
+	ch2, err := initCh(url, vhost, exchangeName2, exchangeType1, "compresspass")
 	if err != nil {
 		panic(err)
 	}
