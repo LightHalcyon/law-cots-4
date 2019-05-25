@@ -72,7 +72,7 @@ func main() {
 	}
 	
 	for i := 0; i < 10; i++  {
-		err = ch.QueueDeclare(joint("dlstatus", fmt.Sprint(strconv.Itoa(i))))
+		err = ch1.QueueDeclare(joint("dlstatus", fmt.Sprint(strconv.Itoa(i))))
 		if err != nil {
 			panic(err)
 		}
