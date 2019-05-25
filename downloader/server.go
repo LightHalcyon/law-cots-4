@@ -48,7 +48,7 @@ func main() {
 	// exchangeName := os.Getenv("EXCNAME")
 	exchangeName = "1406568753-front"
 	exchangeType = "direct"
-	exchangeName1 := "1406568753-dl"
+	exchangeName1 := "1406568753-dl1"
 	exchangeName2 := "1406568753-compress"
 	exchangeType1 := "fanout"
 
