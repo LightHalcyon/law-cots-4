@@ -31,6 +31,8 @@ github.com/reznov53/law-cots2 v0.0.0-20190525045529-f6b2c3672218 h1:2gdzVChu+YWt
 github.com/reznov53/law-cots2 v0.0.0-20190525045529-f6b2c3672218/go.mod h1:wSEiBbIXGaOMDWOaC0ZCGuXWUyTdb5+5OywW/lBN/B0=
 github.com/reznov53/law-cots2 v0.0.0-20190525052904-dc2656fd803c h1:AWI9NSgacQu4K1zCWUzmcwhIHJ0CXJIuvQh8KhZ/fJ4=
 github.com/reznov53/law-cots2 v0.0.0-20190525052904-dc2656fd803c/go.mod h1:wSEiBbIXGaOMDWOaC0ZCGuXWUyTdb5+5OywW/lBN/B0=
+github.com/reznov53/law-cots2 v0.0.0-20190525072011-84cf38a11268 h1:JHxd5mpOD+DSZip+jMOr95zXfFN+yi5AoFbahNMqaVY=
+github.com/reznov53/law-cots2 v0.0.0-20190525072011-84cf38a11268/go.mod h1:wSEiBbIXGaOMDWOaC0ZCGuXWUyTdb5+5OywW/lBN/B0=
 github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94 h1:0ngsPmuP6XIjiFRNFYlvKwSr5zff2v+uPHaffZ6/M4k=
 github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

@@ -34,7 +34,7 @@ form.addEventListener('submit', e => {
     id = "urlpass"
     console.log(id)
     const url1 = document.getElementsByName('url');
-    const url2 = [].map.call(url1, el => el.value)
+    const url2 = [].map.call(url1, el => el.value).filter(function (el) {return el != ""})
     console.log(url2)
     const formData = new FormData();
     formData.append('url', url2.join(";"));
@@ -51,21 +51,48 @@ form.addEventListener('submit', e => {
         console.log(JSON.stringify(json));
         if (json.Code == 200) {
             document.getElementById("status").innerHTML = json.message;
-            WebSocketTest();
         } else {
             document.getElementById("status").innerHTML = json.message;
         }
+    }).then(function() {
+        for(i = 0; i< url2.length; i++) {
+            WebSocketStats(i);
+        };
     });
 });
 
+function WebSocketStats(i) {
+    if ("WebSocket" in window) {
+		// var ws_stomp_display = new SockJS(process.env.MQURL);
+		var ws_stomp_display = new SockJS('http://152.118.148.103:15674/stomp');
+		var client_display = Stomp.over(ws_stomp_display);
+		// var mq_queue_display = "/exchange/"+ process.env.NPM + "/" + id;
+		var mq_queue_display = "/exchange/"+ "1406568753-dl" + "/" + "dlstatus"+ i;
+		var on_connect_display = function() {
+			console.log('connected');
+			client_display.subscribe(mq_queue_display, on_message_display);
+		};
+		var on_error_display = function() {
+			console.log('error');
+		};
+		var on_message_display = function(m) {
+			console.log('message received');
+			document.getElementById("progress" + (i+1)).innerHTML = m.body;
+		};
+		client_display.connect(username, password, on_connect_display, on_error_display, vhost);
+	} else {
+		// The browser doesn't support WebSocket
+		alert("WebSocket NOT supported by your Browser!");
+	}
+}
+
 function WebSocketTest() {
-    console.log(id)
 	if ("WebSocket" in window) {
 		// var ws_stomp_display = new SockJS(process.env.MQURL);
 		var ws_stomp_display = new SockJS('http://152.118.148.103:15674/stomp');
 		var client_display = Stomp.over(ws_stomp_display);
 		// var mq_queue_display = "/exchange/"+ process.env.NPM + "/" + id;
-		var mq_queue_display = "/exchange/"+ "1406568753-front" + "/" + id;
+		var mq_queue_display = "/exchange/"+ "1406568753-front" + "/" + "urlpass";
 		var on_connect_display = function() {
 			console.log('connected');
 			client_display.subscribe(mq_queue_display, on_message_display);

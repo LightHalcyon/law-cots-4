@@ -2,6 +2,9 @@ package main
 
 import (
 	"log"
+	"strings"
+	"fmt"
+	"strconv"
 
 	"github.com/reznov53/law-cots2/mq"
 	// "github.com/reznov53/law-cots2/download"
@@ -23,6 +26,20 @@ func failOnError(err error, msg string) {
 	}
 }
 
+func initCh(url string, vhost string, exchangeName string, exchangeType string, queueName string) (*mq.Channel, error) {
+	ch, err = mq.InitMQ(url, vhost)
+	if err != nil {
+		return ch, err
+	}
+
+	err = ch.ExcDeclare(exchangeName, exchangeType)
+	if err != nil {
+		return ch, err
+	}
+
+	return ch, nil
+}
+
 func main() {
 	// url := "amqp://" + os.Getenv("UNAME") + ":" + os.Getenv("PW") + "@" + os.Getenv("URL") + ":" + os.Getenv("PORT") + "/"
 	url = "amqp://1406568753:167664@152.118.148.103:5672/"
@@ -31,13 +48,15 @@ func main() {
 	// exchangeName := os.Getenv("EXCNAME")
 	exchangeName = "1406568753-front"
 	exchangeType = "direct"
+	exchangeName1 := "1406568753-dl"
+	exchangeType1 := "fanout"
 
-	ch, err = mq.InitMQ(url, vhost)
+	ch, err := initCh(url, vhost, exchangeName, exchangeType, "urlpass")
 	if err != nil {
 		panic(err)
 	}
 
-	err = ch.ExcDeclare(exchangeName, exchangeType)
+	ch1, err := initCh(url, vhost, exchangeName1, exchangeType1, "dlstatus")
 	if err != nil {
 		panic(err)
 	}
@@ -45,6 +64,13 @@ func main() {
 	err = ch.QueueDeclare("urlpass")
 	if err != nil {
 		panic(err)
+	}
+	
+	for i := 0; i < 10; i++  {
+		err = ch.QueueDeclare(joint("dlstatus", fmt.Sprint(strconv.Itoa(i))))
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	msgs, err := ch.Ch.Consume(
@@ -56,18 +82,17 @@ func main() {
 		false,  // no-wait
 		nil,    // args
 	)
-	if err != nil {
-		panic(err)
-	}
 
 	forever := make(chan bool)
 
 	go func() {
 		for d := range msgs {
-			log.Printf("Received a message: %s", d.Body)
+			arr := strings.Split(string(d.Body), ";")
+			log.Println(string(d.Body))
+			dl(arr, ch1)
 		}
 	}()
 
-	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
+	log.Printf("[*] Waiting for messages. To exit press CTRL+C")
 	<-forever
 }
