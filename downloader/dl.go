@@ -33,7 +33,7 @@ func dl(arr []string, ch *mq.Channel, ch2 *mq.Channel, id string) {
 	path := joint(joint("/files/", id), "/")
 	os.MkdirAll(path, 0755)
 	for i, v := range arr {
-		go func(i int, v string, ch *mq.Channel, routeKey string) {
+		go func(i int, v string, ch *mq.Channel, routeKey string, count int) {
 			splits := strings.Split(v, "/")
 			err := download.File(joint(path, splits[len(splits) - 1]), v, ch, routeKey)
 			if err != nil {
@@ -41,7 +41,7 @@ func dl(arr []string, ch *mq.Channel, ch2 *mq.Channel, id string) {
 			} else {
 				count++
 			}
-		}(i, v, ch, joint("dlstatus", fmt.Sprint(strconv.Itoa(i))))
+		}(i, v, ch, joint("dlstatus", fmt.Sprint(strconv.Itoa(i))), count)
 	}
 	log.Println(count)
 	if count == len(arr) {
