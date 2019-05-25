@@ -31,7 +31,7 @@ const form = document.querySelector('form');
 form.addEventListener('submit', e => {
     e.preventDefault();
 
-    id = generateId()
+    id = "urlpass"
     console.log(id)
     const url1 = document.getElementsByName('url');
     const url2 = [].map.call(url1, el => el.value)

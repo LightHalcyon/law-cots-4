@@ -67,7 +67,12 @@ func main() {
 	exchangeName = "1406568753-front"
 	exchangeType = "direct"
 
-	ch, err = mq.InitMQ(url, vhost, exchangeName, exchangeType)
+	ch, err = mq.InitMQ(url, vhost)
+	if err != nil {
+		panic(err)
+	}
+
+	err = ch.ExcDeclare(exchangeName, exchangeType)
 	if err != nil {
 		panic(err)
 	}
