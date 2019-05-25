@@ -61,6 +61,11 @@ func main() {
 		panic(err)
 	}
 
+	ch2, err := initCh(url, vhost, exchangeName1, exchangeType1, "compresspass")
+	if err != nil {
+		panic(err)
+	}
+
 	err = ch.QueueDeclare("urlpass")
 	if err != nil {
 		panic(err)
@@ -71,6 +76,11 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+	}
+
+	err = ch2.QueueDeclare("compresspass")
+	if err != nil {
+		panic(err)
 	}
 
 	msgs, err := ch.Ch.Consume(
@@ -90,7 +100,7 @@ func main() {
 			in := strings.Split(string(d.Body), " ")
 			arr := strings.Split(in[0], ";")
 			log.Println(string(d.Body))
-			dl(arr, ch1, in[1])
+			dl(arr, ch1, ch2, in[1])
 		}
 	}()
 

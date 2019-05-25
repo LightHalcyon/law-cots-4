@@ -4,7 +4,7 @@ import (
 	"strings"
     "strconv"
 	"fmt"
-	"log"
+	// "log"
 	"os"
 
 	"github.com/reznov53/law-cots2/mq"
@@ -28,7 +28,8 @@ func joint(i string, j string) string {
 	return str.String()
 }
 
-func dl(arr []string, ch *mq.Channel, id string) {
+func dl(arr []string, ch *mq.Channel, ch2 *mq.Channel, id string) {
+	count := 0
 	path := joint(joint("/files/", id), "/")
 	os.MkdirAll(path, 0755)
 	for i, v := range arr {
@@ -36,9 +37,13 @@ func dl(arr []string, ch *mq.Channel, id string) {
 			splits := strings.Split(v, "/")
 			err := download.File(joint(path, splits[len(splits) - 1]), v, ch, routeKey)
 			if err != nil {
-				log.Println(err)
 				ch.PostMessage("Failed to download", routeKey)
+			} else {
+				count++
 			}
 		}(i, v, ch, joint("dlstatus", fmt.Sprint(strconv.Itoa(i))))
+	}
+	if count == len(arr) {
+		ch2.PostMessage(id, "compresspass")
 	}
 }
