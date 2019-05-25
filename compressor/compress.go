@@ -91,7 +91,7 @@ func main() {
 	// exchangeName := os.Getenv("EXCNAME")
 	exchangeName := "1406568753-compress"
 	exchangeType := "fanout"
-	exchangeName1 := "1406568753-front"
+	exchangeName1 := "1406568753-frontdl"
 	exchangeType1 := "fanout"
 	
 	ch, err := initCh(url, vhost, exchangeName, exchangeType, "compresspass")
