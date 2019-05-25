@@ -33,7 +33,7 @@ func sendMessage(c *gin.Context) {
 	c.Header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, X-Routing-Key, Host")
 
-	routingKey := c.GetHeader("X-Routing-Key")
+	// routingKey := c.GetHeader("X-Routing-Key")
 
 	urlOut, found := c.GetPostForm("url")
 	if !found {
@@ -43,7 +43,7 @@ func sendMessage(c *gin.Context) {
 		})
 		return
 	}
-	err := ch.PostMessage(urlOut, routingKey)
+	err := ch.PostMessage(urlOut, "urlpass")
 	if err != nil {
 		c.JSON(http.StatusNotFound, appError{
 			Code:		http.StatusNotFound,
@@ -73,6 +73,11 @@ func main() {
 	}
 
 	err = ch.ExcDeclare(exchangeName, exchangeType)
+	if err != nil {
+		panic(err)
+	}
+
+	err = ch.QueueDeclare("urlpass")
 	if err != nil {
 		panic(err)
 	}
