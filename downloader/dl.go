@@ -29,7 +29,7 @@ func joint(i string, j string) string {
 }
 
 func dl(arr []string, ch *mq.Channel, id string) {
-	path := joint(joint("files/", id), "/")
+	path := joint(joint("/files/", id), "/")
 	os.MkdirAll(path, 0755)
 	for i, v := range arr {
 		go func(i int, v string, ch *mq.Channel, routeKey string) {
