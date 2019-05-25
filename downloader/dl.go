@@ -4,7 +4,7 @@ import (
 	"strings"
     "strconv"
 	"fmt"
-	// "log"
+	"log"
 	"os"
 
 	"github.com/reznov53/law-cots2/mq"
